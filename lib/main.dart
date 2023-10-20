@@ -1,123 +1,172 @@
-//import 'dart:async';
+import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
+class Task extends StatelessWidget{
+  final int id;
+  final String title;
+  Function (bool?) onChanged;
+
+  Task({
+    super.key, required this.id, required this.title, required this.onChanged,
+});
 }
 
 class MyApp extends StatefulWidget {
+  /// Stato dell'applicazione.
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  List<String> tasks = [];
+  /// Lista delle voci.
+  List<Task> tasks = [];
+
+  /// Tempo necessario per aggiungere le voci.
   int timeAdded = 0;
-  int time100added = 0;
-  int time250added = 0;
-  int time500added = 0;
+
+  /// Tempo necessario per rimuovere le voci.
   int timeRemoved = 0;
-  int indexTasks=0;
-  double timeAverage=0;
 
+  /// Inizializza il stato dell'applicazione.
+  @override
+  void initState() {
+    super.initState();
+
+    /// Aggiunge due voci di default.
+    tasks.add(Task(id: 1, title: "Premi i seguenti tasti"));
+    tasks.add(Task(id: 2, title: "per aggiungere voci alla lista"));
+  }
+
+  /// Aggiunge 100 voci alla lista.
   void add100Tasks() async {
+    /// Inizializza il timer.
     int start = DateTime.now().millisecondsSinceEpoch;
-    tasks.clear();
+
+    /// Aggiunge le voci alla lista.
     for (int i = 0; i < 100; i++) {
-      tasks.add("Task ${i + 1}");
+      tasks.add(Task(id: i + 3, title: "Task ${i + 3}"));
     }
+
+    /// Termina il timer.
     int end = DateTime.now().millisecondsSinceEpoch;
-    timeAdded += end - start;
-    time100added = end - start;
-    print("Time 100 task: $time100added" );
-    indexTasks+=100;
+
+    /// Memorizza il tempo necessario.
+    timeAdded = end - start;
+
+    /// Aggiorna lo stato dell'applicazione.
     setState(() {});
   }
 
+  /// Aggiunge 250 voci alla lista.
   void add250Tasks() async {
+    /// Inizializza il timer.
     int start = DateTime.now().millisecondsSinceEpoch;
-    tasks.clear();
+
+    /// Aggiunge le voci alla lista.
     for (int i = 0; i < 250; i++) {
-      tasks.add("Task ${i + 1}");
+      tasks.add(Task(id: i + 13, title: "Task ${i + 13}"));
     }
+
+    /// Termina il timer.
     int end = DateTime.now().millisecondsSinceEpoch;
-    timeAdded += end - start;
-    time250added = end - start;
-    print("Time 250 task: $time250added" );
-    indexTasks+=250;
+
+    /// Memorizza il tempo necessario.
+    timeAdded = end - start;
+
+    /// Aggiorna lo stato dell'applicazione.
     setState(() {});
   }
 
+  /// Aggiunge 500 voci alla lista.
   void add500Tasks() async {
+    /// Inizializza il timer.
     int start = DateTime.now().millisecondsSinceEpoch;
-    tasks.clear();
+
+    /// Aggiunge le voci alla lista.
     for (int i = 0; i < 500; i++) {
-      tasks.add("Task ${i + 1}");
+      tasks.add(Task(id: i + 33, title: "Task ${i + 33}"));
     }
+
+    /// Termina il timer.
     int end = DateTime.now().millisecondsSinceEpoch;
-    timeAdded += end - start;
-    time500added = end - start;
-    print("Time 500 task: $time500added" );
-    indexTasks+=500;
+
+    /// Memorizza il tempo necessario.
+    timeAdded = end - start;
+
+    /// Aggiorna lo stato dell'applicazione.
     setState(() {});
   }
 
+  /// Rimuove tutte le voci dalla lista.
   void removeTasks() async {
+    /// Inizializza il timer.
     int start = DateTime.now().millisecondsSinceEpoch;
+
+    /// Rimuove le voci dalla lista.
     tasks.clear();
+
+    /// Termina il timer.
     int end = DateTime.now().millisecondsSinceEpoch;
-    timeRemoved += end - start;
-    print("Time removed for $indexTasks: $timeRemoved" );
-    indexTasks=0;
+
+    /// Memorizza il tempo necessario.
+    timeRemoved = end - start;
+
+    /// Aggiorna lo stato dell'applicazione.
     setState(() {});
   }
 
+
+  /// Costruisce l'interfaccia utente.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Todo List"),
+          title: Text("Benchmark todo Flutter"),
         ),
-        body: ListView.builder(
-          itemCount: tasks.length,
-          itemBuilder: (context, index) {
-            return CheckboxListTile(
-              title: Text(tasks[index]),
-              value: tasks[index].contains("*"),
-              onChanged: (value) {
-                if (value=="true") {
-                  tasks[index] = tasks[index] + "*";
-                } else {
-                  tasks[index] = tasks[index].substring(0, tasks[index].length - 1);
-                }
-                setState(() {});
-              },
-            );
-          },
-        ),
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+        body: Column(
           children: [
-            FloatingActionButton(
-              onPressed: add100Tasks,
-              tooltip: "Aggiungi 100 voci",
-              child: Icon(Icons.add),
+            Expanded(
+              child: ListView.builder(
+                itemCount: tasks.length,
+                itemBuilder: (context, index) {
+                  return CheckboxListTile(
+                    title: Text(tasks[index].title),
+                    value: tasks[index].isCompleted,
+                    onChanged: (value) {
+                      setState(() {
+                      tasks[index].isCompleted = value;
+                      });
+                    },
+                  );
+                },
+              ),
             ),
-            FloatingActionButton(
-              onPressed: add250Tasks,
-              tooltip: "Aggiungi 250 voci",
-              child: Icon(Icons.add_circle_outline),
-            ),
-            FloatingActionButton(
-              onPressed: add500Tasks,
-              tooltip: "Aggiungi 500 voci",
-              child: Icon(Icons.add_circle),
-            ),
-            FloatingActionButton(
-              onPressed: removeTasks,
-              tooltip: "Rimuovi tutte le voci",
-              child: Icon(Icons.remove),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                  onPressed: add100Tasks,
+                  tooltip: "Aggiungi 100 voci",
+                  child: Icon(Icons.add, size: 60),
+                ),
+                FloatingActionButton(
+                  onPressed: add250Tasks,
+                  tooltip: "Aggiungi 250 voci",
+                  child: Icon(Icons.add_circle_outline, size: 60),
+                ),
+                FloatingActionButton(
+                  onPressed: add500Tasks,
+                  tooltip: "Aggiungi 500 voci",
+                  child: Icon(Icons.add_circle, size: 60),
+                ),
+                FloatingActionButton(
+                  onPressed: removeTasks,
+                  tooltip: "Rimuovi tutte le voci",
+                  child: Icon(Icons.remove, size: 60),
+                ),
+              ],
             ),
           ],
         ),
@@ -125,3 +174,4 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
