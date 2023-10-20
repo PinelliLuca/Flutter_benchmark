@@ -22,6 +22,7 @@ class _MyAppState extends State<MyApp> {
 
   void add100Tasks() async {
     int start = DateTime.now().millisecondsSinceEpoch;
+    tasks.clear();
     for (int i = 0; i < 100; i++) {
       tasks.add("Task ${i + 1}");
     }
@@ -35,6 +36,7 @@ class _MyAppState extends State<MyApp> {
 
   void add250Tasks() async {
     int start = DateTime.now().millisecondsSinceEpoch;
+    tasks.clear();
     for (int i = 0; i < 250; i++) {
       tasks.add("Task ${i + 1}");
     }
@@ -48,6 +50,7 @@ class _MyAppState extends State<MyApp> {
 
   void add500Tasks() async {
     int start = DateTime.now().millisecondsSinceEpoch;
+    tasks.clear();
     for (int i = 0; i < 500; i++) {
       tasks.add("Task ${i + 1}");
     }
