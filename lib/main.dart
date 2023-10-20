@@ -1,4 +1,4 @@
-import 'dart:async';
+//import 'dart:async';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,7 +15,10 @@ class _MyAppState extends State<MyApp> {
   int timeAdded = 0;
   int time100added = 0;
   int time250added = 0;
+  int time500added = 0;
   int timeRemoved = 0;
+  int indexTasks=0;
+  double timeAverage=0;
 
   void add100Tasks() async {
     int start = DateTime.now().millisecondsSinceEpoch;
@@ -26,6 +29,7 @@ class _MyAppState extends State<MyApp> {
     timeAdded += end - start;
     time100added = end - start;
     print("Time 100 task: $time100added" );
+    indexTasks+=100;
     setState(() {});
   }
 
@@ -36,6 +40,9 @@ class _MyAppState extends State<MyApp> {
     }
     int end = DateTime.now().millisecondsSinceEpoch;
     timeAdded += end - start;
+    time250added = end - start;
+    print("Time 250 task: $time250added" );
+    indexTasks+=250;
     setState(() {});
   }
 
@@ -46,6 +53,9 @@ class _MyAppState extends State<MyApp> {
     }
     int end = DateTime.now().millisecondsSinceEpoch;
     timeAdded += end - start;
+    time500added = end - start;
+    print("Time 500 task: $time500added" );
+    indexTasks+=500;
     setState(() {});
   }
 
@@ -54,6 +64,8 @@ class _MyAppState extends State<MyApp> {
     tasks.clear();
     int end = DateTime.now().millisecondsSinceEpoch;
     timeRemoved += end - start;
+    print("Time removed for $indexTasks: $timeRemoved" );
+    indexTasks=0;
     setState(() {});
   }
 
@@ -97,7 +109,7 @@ class _MyAppState extends State<MyApp> {
             FloatingActionButton(
               onPressed: add500Tasks,
               tooltip: "Aggiungi 500 voci",
-              child: Icon(Icons.add_circle_2),
+              child: Icon(Icons.add_circle),
             ),
             FloatingActionButton(
               onPressed: removeTasks,
