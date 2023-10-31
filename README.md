@@ -1,2 +1,2 @@
 # To do list
-## Progetto iniziale eliminato
+## Progetto iniziale, eliminato
